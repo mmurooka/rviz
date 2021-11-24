@@ -357,8 +357,15 @@ void EffortDisplay::processMessage(const sensor_msgs::JointState::ConstPtr& msg)
         continue;
       };
       tf::Vector3 axis_joint(joint->axis.x, joint->axis.y, joint->axis.z);
+      tf::Quaternion axis_rotation;
       tf::Vector3 axis_z(0, 0, 1);
-      tf::Quaternion axis_rotation(tf::tfCross(axis_joint, axis_z), tf::tfAngle(axis_joint, axis_z));
+      if (tf::tfDot(axis_joint, axis_z) > 1 - 1e-10) {
+        axis_rotation = tf::Quaternion::getIdentity();
+      } else if (tf::tfDot(axis_joint, axis_z) < -(1 - 1e-10)) {
+        axis_rotation = tf::createQuaternionFromRPY(0, M_PI, 0);
+      } else {
+        axis_rotation = tf::Quaternion(tf::tfCross(axis_z, axis_joint), tf::tfAngle(axis_z, axis_joint));
+      }
       if (std::isnan(axis_rotation.x()) || std::isnan(axis_rotation.y()) || std::isnan(axis_rotation.z()))
         axis_rotation = tf::Quaternion::getIdentity();
 

@@ -139,11 +139,11 @@ void EffortVisual::setMessage(const sensor_msgs::JointStateConstPtr& msg)
       effort_arrow_[joint_name]->set(0, width_ * 2, width_ * 2 * 1.0, width_ * 2 * 2.0);
       if (effort > 0)
       {
-        effort_arrow_[joint_name]->setDirection(orientation_[joint_name] * Ogre::Vector3(-1, 0, 0));
+        effort_arrow_[joint_name]->setDirection(orientation_[joint_name] * Ogre::Vector3(1, 0, 0));
       }
       else
       {
-        effort_arrow_[joint_name]->setDirection(orientation_[joint_name] * Ogre::Vector3(1, 0, 0));
+        effort_arrow_[joint_name]->setDirection(orientation_[joint_name] * Ogre::Vector3(-1, 0, 0));
       }
       effort_arrow_[joint_name]->setPosition(
           orientation_[joint_name] * Ogre::Vector3(0, 0.05 + effort_value * scale_ * 0.5, 0) +
@@ -153,7 +153,7 @@ void EffortVisual::setMessage(const sensor_msgs::JointStateConstPtr& msg)
       for (int i = 0; i < 30; i++)
       {
         Ogre::Vector3 point =
-            Ogre::Vector3((0.05 + effort_value * scale_ * 0.5) * sin(i * 2 * M_PI / 32),
+            Ogre::Vector3((0.05 + effort_value * scale_ * 0.5) * -sin(i * 2 * M_PI / 32),
                           (0.05 + effort_value * scale_ * 0.5) * cos(i * 2 * M_PI / 32), 0);
         if (effort < 0)
           point.x = -point.x;
