@@ -164,11 +164,14 @@ void TriangleListMarker::onNewMessage(const MarkerConstPtr& old_message,
 
   if (has_vertex_colors || has_face_colors)
   {
-    material_->getTechnique(0)->setLightingEnabled(false);
+    // Ref. https://gamedev.stackexchange.com/a/68342
+    material_->getTechnique(0)->setLightingEnabled(true);
+    material_->getTechnique(0)->getPass(0)->setVertexColourTracking(Ogre::TVC_AMBIENT | Ogre::TVC_DIFFUSE | Ogre::TVC_SPECULAR);
   }
   else
   {
     material_->getTechnique(0)->setLightingEnabled(true);
+    material_->getTechnique(0)->getPass(0)->setVertexColourTracking(Ogre::TVC_NONE);
     float r, g, b, a;
     r = new_message->color.r;
     g = new_message->color.g;
